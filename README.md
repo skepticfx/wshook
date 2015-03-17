@@ -39,7 +39,7 @@ anotherWsClient.onopen = function() {
 
 ## Used by
 
-* [**Hookish**](htps://github.com/skepticfx/hookish): Hooks in to interesting functions and helps reverse the web app faster.
+* [**Hookish**](https://github.com/skepticfx/hookish): Hooks in to interesting functions and helps reverse the web app faster.
 
 ## TODO
 
