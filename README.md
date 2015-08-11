@@ -1,40 +1,70 @@
-# wshook
-Easily hook into WebSocket request and response
+# wsHook
+#### Easily intercept and modify WebSocket requests and message events.
 
 ## Usage
 
-#### Include in your WebSocket client
+#### 1. Download and include `wsHook.js` in your WebSocket client
 
 ```html
 <script src='wsHook.js'></script>
 ```
 
-#### Add the EventListeners
-Define your custom 'onSend' and 'onMessage' event Listeners on the globally exposed `wsHook` object.
+#### 2. Define the `before` and `after` hooks
+Define your custom `before` and `after` hooks on the globally exposed `wsHook` object.
 
 ```javascript
-wsHook.onSend = function(e) {
-    console.log("Message Sent to " + e.url + " : " + e.data);
-}
-wsHook.onMessage = function(e) {
-    console.log("Message recieved from " + e.url + " : " + e.data);
+wsHook.before = function(data, url) {
+    console.log("Sending message to " + url + " : " + data);
 }
 
+wsHook.after = function(messageEvent, url) {
+    console.log("Received message from " + url + " : " + messageEvent.data);
+}
 ```
 
-#### Let your program play with WebSockets
+#### 3. Let your program play with WebSockets
 ```javascript
 var wsClient = new WebSocket("wss://echo.websocket.org");
 
 wsClient.onopen = function() {
     wsClient.send("Echo this");
 }
+```
+## API
+### `wsHook.before` - function(data, url):
+Invoked just before calling the actual WebSocket's `send()` method.
 
-var anotherWsClient = new WebSocket("wss://echo.websocket.org");
+This method must return `data` which can be modified as well.
 
-anotherWsClient.onopen = function() {
-  anotherWsClient.send("Another Echo Message");
+### `wsHook.after` - function(event, url):
+Invoked just after receiving the `MessageEvent` from the WebSocket server and before calling the WebSocket's `onmessage` Event Handler.
+
+This method must return `event` whose properties can be modified as well. You might be interested in modiying, `event.data` or `event.origin` usually.
+
+
+## Overview
+<img src="http://skepticfx.com/imgs/wshook.png">
+
+## Example
+
+```javascript
+// Load wsHook.js
+// Define the 'before' and 'after' hooks as you wish.
+
+wsHook.before = function(data, url){
+  data += "_modified";
+  console.log("Modifying data to " + data);
+  return data;
 }
+
+var wsClient = new WebSocket("wss://echo.websocket.org");
+wsClient.onopen = function() {
+  wsClient.send("Echo this");
+}
+wsClient.onmessage = function(e){
+  console.log(e);
+}
+
 ```
 
 ## Used by
@@ -43,7 +73,7 @@ anotherWsClient.onopen = function() {
 
 ## TODO
 
-* Implement simplistic EventEmitter instead of a heavy library.
+* Test cases for common WebSocket libraries.
 
 ## License
 
