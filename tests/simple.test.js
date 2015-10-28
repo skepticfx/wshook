@@ -3,6 +3,7 @@
 describe("Simple tests using the WebSocket object", function() {
   var wsClient;
   before(function(done) {
+    wsHook.enable();
     wsClient = new WebSocket("wss://echo.websocket.org");
     wsClient.onopen = function() {
       done();
@@ -11,14 +12,18 @@ describe("Simple tests using the WebSocket object", function() {
 
   beforeEach(function() {
     wsHook.resetHooks();
-  })
+  });
+
+  after(function(){
+    wsHook.disable();
+  });
 
   describe("Before Sending", function() {
     it("hook in passively", function(done) {
-      wsHook.before = function(data) {
+      wsHook.before(function(data) {
         expect(data).to.equal("Before: Passively Hooking");
         return data;
-      }
+      });
       wsClient.send("Before: Passively Hooking");
       wsClient.onmessage = function() {
         done();
@@ -26,10 +31,10 @@ describe("Simple tests using the WebSocket object", function() {
     })
 
     it("hook in actively", function(done) {
-      wsHook.before = function(data) {
+      wsHook.before(function(data) {
         data = "Before: Actively Hooking and Modified";
         return data;
-      }
+      });
       wsClient.send("Before: Actively Hooking");
       wsClient.onmessage = function(e) {
         expect(e.data).to.equal("Before: Actively Hooking and Modified");
@@ -40,10 +45,10 @@ describe("Simple tests using the WebSocket object", function() {
 
   describe("After Sending", function() {
     it("hook in passively", function(done) {
-      wsHook.after = function(event) {
+      wsHook.after(function(event) {
         expect(event.data).to.equal("After: Passively Hooking");
         return event;
-      }
+      });
       wsClient.send("After: Passively Hooking");
       wsClient.onmessage = function(m) {
         done();
@@ -51,10 +56,10 @@ describe("Simple tests using the WebSocket object", function() {
     })
 
     it("hook in actively", function(done) {
-      wsHook.after = function(event) {
+      wsHook.after(function(event) {
         event.data = "After: Actively Hooking and Modified";
         return event;
-      }
+      });
       wsClient.send("After: Actively Hooking");
 
       wsClient.onmessage = function(e) {

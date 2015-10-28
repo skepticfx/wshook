@@ -6,14 +6,15 @@
 </head>
 <body>
   <div id="mocha"></div>
-
+  <script src="../wsHook.js"></script>
   <script src="https://cdn.rawgit.com/jquery/jquery/2.1.4/dist/jquery.min.js"></script>
+  <script src="http://socketio.damnvulnerable.me/socket.io/socket.io.js"></script>
   <script src="https://cdn.rawgit.com/Automattic/expect.js/0.3.1/index.js"></script>
   <script src="https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.js"></script>
 
   <script>mocha.setup('bdd')</script>
-  <script src="../wsHook.js"></script>
-  <script src="simple.js"></script>
+  <script src="simple.test.js"></script>
+  <script src="socket.io.test.js"></script>
   <script>
     mocha.checkLeaks();
     mocha.globals(['jQuery']);
