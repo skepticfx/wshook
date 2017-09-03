@@ -57,15 +57,20 @@ var wsHook = {};
     }
 
     // Events needs to be proxied and bubbled down.
-    var onmessageFunction;
-    WSObject.__defineSetter__('onmessage', function(func) {
-      onmessageFunction = func;
-    });
-    WSObject.addEventListener('message', function(e) {
-      e = new wsHook.after(new MutableMessageEvent(e), this.url) || e;
-      e = new MessageEvent(e.type, e);
-      onmessageFunction.apply(this, [e])
-    });
+    WSObject._addEventListener = WSObject.addEventListener;
+    WSObject.addEventListener = function () {
+      var eventThis = this;
+      // if eventName is 'message'
+      if(arguments[0] === 'message'){
+        arguments[1] = (function (userFunc) {
+            return function instrumentAddEventListener() {
+              arguments[0] = new wsHook.after(new MutableMessageEvent(arguments[0]), WSObject.url) || arguments[0];
+              userFunc.apply(eventThis, arguments);
+            }
+        })(arguments[1]);
+      }
+      return WSObject._addEventListener.apply(this, arguments);
+    }
 
     return WSObject;
   }

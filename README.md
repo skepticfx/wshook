@@ -19,6 +19,7 @@ wsHook.before = function(data, url) {
 
 wsHook.after = function(messageEvent, url) {
     console.log("Received message from " + url + " : " + messageEvent.data);
+    return messageEvent;
 }
 ```
 

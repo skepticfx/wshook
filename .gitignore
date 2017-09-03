@@ -26,3 +26,8 @@ node_modules
 
 # Users Environment Variables
 .lock-wscript
+
+
+# remove package-lock.json for now
+package-lock.json
+
