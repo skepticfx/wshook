@@ -52,7 +52,7 @@ var wsHook = {};
 
     var _send = WSObject.send
     WSObject.send = function (data) {
-      data = wsHook.before(data, WSObject.url) || data
+      arguments[0] = wsHook.before(data, WSObject.url) || data
       _send.apply(this, arguments)
     }
 
@@ -71,6 +71,16 @@ var wsHook = {};
       }
       return WSObject._addEventListener.apply(this, arguments)
     }
+
+    var onmessageSetter = WSObject.__lookupSetter__('onmessage')
+    Object.defineProperty(WSObject, 'onmessage', {
+      set: function () {
+        console.log('called onmessage')
+        console.log(arguments)
+        onmessageSetter.apply(this, arguments)
+      }
+
+    })
 
     return WSObject
   }

@@ -16,34 +16,11 @@ wsHook.after = function (messageEvent, url) {
   return messageEvent
 }
 
-let wsClient = new WebSocket('ws://localhost:8080')
+var wsClient = new WebSocket('ws://localhost:8080')
 
 wsClient.onopen = function () {
   wsClient.send('Echo this')
 }
-
-// wsClient.addEventListener('message', function(event) {
-//   console.log(event.data)
-//   console.log(event)
-// })
-
-/* eslint-disable accessor-pairs */
-let onmessageSetter = wsClient.__lookupSetter__('onmessage')
-Object.defineProperty(wsClient, 'onmessage', {
-  set: function () {
-    console.log('called onmessage')
-    console.log(arguments)
-    onmessageSetter.apply(this, arguments)
-  }
-
-})
-
-// wsClient.__defineSetter__('onmessage', function(func){
-//   return function() {
-//     console.log(123);
-//     return func.apply(this, arguments)
-//   }
-// })
 
 wsClient.onmessage = function (event) {
   console.log(event.data)
