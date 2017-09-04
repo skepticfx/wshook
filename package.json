@@ -10,13 +10,19 @@
   "dependencies": {
     "ws": "^3.1.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "standard": "^10.0.3"
+  },
   "scripts": {
     "test": "node examples/server.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/skepticfx/wshook.git"
+  },
+  "standard": {
+    "globals": [ "wsHook", "WebSocket", "expect", "MessageEvent" ],
+    "env": "mocha"
   },
   "keywords": [],
   "author": "",
