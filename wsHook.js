@@ -72,14 +72,16 @@ var wsHook = {};
       return WSObject._addEventListener.apply(this, arguments)
     }
 
-    var onmessageSetter = WSObject.__lookupSetter__('onmessage')
     Object.defineProperty(WSObject, 'onmessage', {
-      set: function () {
-        console.log('called onmessage')
-        console.log(arguments)
-        onmessageSetter.apply(this, arguments)
+      'set': function () {
+        var eventThis = this
+        var userFunc = arguments[0]
+        var onMessageHandler = function () {
+          arguments[0] = wsHook.after(new MutableMessageEvent(arguments[0]), WSObject.url) || arguments[0]
+          userFunc.apply(eventThis, arguments)
+        }
+        WSObject._addEventListener.apply(this, ['message', onMessageHandler, false])
       }
-
     })
 
     return WSObject

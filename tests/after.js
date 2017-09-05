@@ -13,31 +13,6 @@ describe('Simple tests using the WebSocket object', function () {
     wsHook.resetHooks()
   })
 
-  describe('Before Sending', function () {
-    it('hook in passively', function (done) {
-      wsHook.before = function (data) {
-        expect(data).to.equal('Before: Passively Hooking')
-        return data
-      }
-      wsClient.send('Before: Passively Hooking')
-      wsClient.onmessage = function () {
-        done()
-      }
-    })
-
-    it('hook in actively', function (done) {
-      wsHook.before = function (data) {
-        data = 'Before: Actively Hooking and Modified'
-        return data
-      }
-      wsClient.send('Before: Actively Hooking')
-      wsClient.onmessage = function (e) {
-        expect(e.data).to.equal('Before: Actively Hooking and Modified')
-        done()
-      }
-    })
-  })
-
   describe('After Sending', function () {
     it('hook in passively', function (done) {
       wsHook.after = function (event) {
@@ -46,6 +21,8 @@ describe('Simple tests using the WebSocket object', function () {
       }
       wsClient.send('After: Passively Hooking')
       wsClient.onmessage = function (m) {
+        console.log(m)
+        console.log(m)
         done()
       }
     })
@@ -55,12 +32,13 @@ describe('Simple tests using the WebSocket object', function () {
         event.data = 'After: Actively Hooking and Modified'
         return event
       }
-      wsClient.send('After: Actively Hooking')
 
       wsClient.onmessage = function (e) {
         expect(e.data).to.equal('After: Actively Hooking and Modified')
         done()
       }
+
+      wsClient.send('After: Actively Hooking')
     })
   })
 })

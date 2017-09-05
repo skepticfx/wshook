@@ -1,6 +1,6 @@
 {
   "name": "wshook",
-  "version": "1.0.0",
+  "version": "0.1.1",
   "description": "Easily intercept and modify WebSocket requests and message events",
   "main": "wsHook.js",
   "directories": {
@@ -22,11 +22,14 @@
   },
   "standard": {
     "globals": [ "wsHook", "WebSocket", "expect", "MessageEvent" ],
-    "env": "mocha"
+    "env": "mocha",
+    "ignore":[
+      "tests/dist/"
+    ]
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/skepticfx/wshook/issues"
   },
