@@ -14,7 +14,7 @@
     "standard": "^10.0.3"
   },
   "scripts": {
-    "test": "node examples/server.js"
+    "example": "node examples/server.js"
   },
   "repository": {
     "type": "git",

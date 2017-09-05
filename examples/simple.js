@@ -2,12 +2,12 @@
 // Define the 'before' and 'after' hooks as you wish.
 
 wsHook.before = function (data, url) {
-  data = 'modified data'
+  data = 'modified data while sending'
   return data
 }
 
 wsHook.after = function (messageEvent, url) {
-  messageEvent.data = '-- data modified -- ' + messageEvent.data + ' --'
+  messageEvent.data = messageEvent.data + ' and receiving'
   return messageEvent
 }
 
