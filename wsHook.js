@@ -38,14 +38,19 @@ var wsHook = {};
   var after = wsHook.after = function (e, url) {
     return e
   }
+  var modifyUrl = wsHook.modifyUrl = function(url) {
+    return url
+  }
   wsHook.resetHooks = function () {
     wsHook.before = before
     wsHook.after = after
+    wsHook.modifyUrl = modifyUrl
   }
 
   var _WS = WebSocket
   WebSocket = function (url, protocols) {
     var WSObject
+    url = wsHook.modifyUrl(url) || url
     this.url = url
     this.protocols = protocols
     if (!this.protocols) { WSObject = new _WS(url) } else { WSObject = new _WS(url, protocols) }
