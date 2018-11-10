@@ -1,6 +1,6 @@
 // wsHook loaded wsHook.js
 // Define the 'onSend' and 'onMessage' Event Listeners from wsHook once
-describe('Simple tests using the WebSocket object', function () {
+describe('Before Hooks', function () {
   var wsClient
   before(function (done) {
     wsClient = new WebSocket('wss://echo.websocket.org')

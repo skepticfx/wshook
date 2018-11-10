@@ -32,10 +32,10 @@ var wsHook = {};
     this.__proto__ = o.__proto__ || MessageEvent.__proto__
   }
 
-  var before = wsHook.before = function (data, url) {
+  var before = wsHook.before = function (data, url, wsObject) {
     return data
   }
-  var after = wsHook.after = function (e, url) {
+  var after = wsHook.after = function (e, url, wsObject) {
     return e
   }
   wsHook.resetHooks = function () {
@@ -64,7 +64,8 @@ var wsHook = {};
       if (arguments[0] === 'message') {
         arguments[1] = (function (userFunc) {
           return function instrumentAddEventListener () {
-            arguments[0] = wsHook.after(new MutableMessageEvent(arguments[0]), WSObject.url) || arguments[0]
+            arguments[0] = wsHook.after(new MutableMessageEvent(arguments[0]), WSObject.url, WSObject)
+            if (arguments[0] === null) return
             userFunc.apply(eventThis, arguments)
           }
         })(arguments[1])
@@ -77,7 +78,8 @@ var wsHook = {};
         var eventThis = this
         var userFunc = arguments[0]
         var onMessageHandler = function () {
-          arguments[0] = wsHook.after(new MutableMessageEvent(arguments[0]), WSObject.url) || arguments[0]
+          arguments[0] = wsHook.after(new MutableMessageEvent(arguments[0]), WSObject.url, WSObject)
+          if (arguments[0] === null) return
           userFunc.apply(eventThis, arguments)
         }
         WSObject._addEventListener.apply(this, ['message', onMessageHandler, false])

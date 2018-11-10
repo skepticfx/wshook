@@ -1,6 +1,6 @@
 // wsHook loaded wsHook.js
 // Define the 'onSend' and 'onMessage' Event Listeners from wsHook once
-describe('Simple tests using the WebSocket object', function () {
+describe('After Hooks & Resend', function () {
   var wsClient
   before(function (done) {
     wsClient = new WebSocket('wss://echo.websocket.org')
@@ -22,7 +22,6 @@ describe('Simple tests using the WebSocket object', function () {
       wsClient.send('After: Passively Hooking')
       wsClient.onmessage = function (m) {
         console.log(m)
-        console.log(m)
         done()
       }
     })
@@ -39,6 +38,28 @@ describe('Simple tests using the WebSocket object', function () {
       }
 
       wsClient.send('After: Actively Hooking')
+    })
+  })
+
+  describe('After hook intercepts and sends data, but cancels bubbling down', function () {
+    it('hook in actively', function (done) {
+      this.timeout(6000)
+      var thisShouldNeverBeCalled = true
+      wsHook.after = function (event) {
+        event.data = 'After: Actively Hooking and Modified'
+        return null
+      }
+
+      wsClient.onmessage = function (e) {
+        thisShouldNeverBeCalled = false
+      }
+
+      wsClient.send('After: Actively Hooking')
+
+      setTimeout(function () {
+        expect(thisShouldNeverBeCalled).to.equal(true)
+        done()
+      }, 2000)
     })
   })
 })
