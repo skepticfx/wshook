@@ -17,6 +17,7 @@ wsHook.before = function(data, url) {
     console.log("Sending message to " + url + " : " + data);
 }
 
+// Make sure your program calls `wsClient.onmessage` event handler somewhere.
 wsHook.after = function(messageEvent, url) {
     console.log("Received message from " + url + " : " + messageEvent.data);
     return messageEvent;
@@ -29,6 +30,10 @@ var wsClient = new WebSocket("wss://echo.websocket.org");
 
 wsClient.onopen = function() {
     wsClient.send("Echo this");
+}
+
+wsClient.onmessage = function(e){
+  console.log(e);
 }
 ```
 ## API
