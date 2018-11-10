@@ -51,10 +51,14 @@ Invoked just before calling the actual WebSocket's `send()` method.
 
 This method must return `data` which can be modified as well.
 
-### `wsHook.after` - function(event, url):
+### `wsHook.after` - function(event, url, wsObject):
 Invoked just after receiving the `MessageEvent` from the WebSocket server and before calling the WebSocket's `onmessage` Event Handler.
 
 This method must return `event` whose properties can be modified as well. You might be interested in modiying, `event.data` or `event.origin` usually.
+
+The `wsObject` refers to the corresponding `WebSocket` object used. You can use this to send a message to the server. This allows one to fully hijack the WebSocket connection programatically. 
+
+If you do not want the user's original `onmessage` event handler to be called, just return `null`.
 
 
 ## Overview
