@@ -1,6 +1,10 @@
 # wsHook
 #### Easily intercept and modify WebSocket requests and message events.
 
+
+#### ToDo
+Figure out if we still need immutable MessageEvent
+
 ## Usage
 
 #### 1. Download and include `wsHook.js` in your WebSocket client
