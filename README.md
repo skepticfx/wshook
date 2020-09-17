@@ -17,7 +17,7 @@ Figure out if we still need immutable MessageEvent
 Define your custom `before` and `after` hooks on the globally exposed `wsHook` object.
 
 ```javascript
-wsHook.before = function(data, url) {
+wsHook.before = function(data, url, wsObject) {
     console.log("Sending message to " + url + " : " + data);
 }
 
@@ -50,7 +50,7 @@ wsClient.onmessage = function(e){
 }
 ```
 ## API
-### `wsHook.before` - function(data, url):
+### `wsHook.before` - function(data, url, wsObject):
 Invoked just before calling the actual WebSocket's `send()` method.
 
 This method must return `data` which can be modified as well.
@@ -74,7 +74,7 @@ If you do not want the user's original `onmessage` event handler to be called, j
 // Load wsHook.js
 // Define the 'before' and 'after' hooks as you wish.
 
-wsHook.before = function(data, url){
+wsHook.before = function(data, url, wsObject){
   data += "_modified";
   console.log("Modifying data to " + data);
   return data;
