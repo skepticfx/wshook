@@ -57,7 +57,7 @@ var wsHook = {};
 
     var _send = WSObject.send
     WSObject.send = function (data) {
-      arguments[0] = wsHook.before(data, WSObject.url) || data
+      arguments[0] = wsHook.before(data, WSObject.url, WSObject) || data
       _send.apply(this, arguments)
     }
 
